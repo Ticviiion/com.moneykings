@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.moneykings.user.mapper.UserMapper">
+
+    <resultMap id="UserVOResultMap" type="com.moneykings.user.dao.UserVO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="roles" ofType="com.moneykings.user.dao.Role">
+            <id property="roleId" column="role_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="roleName" column="role_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserVO" resultMap="UserVOResultMap">
+        SELECT
+            u.id as id,
+            u.name as name,
+            r.id as role_id,
+            r.user_id as user_id,
+            r.role_name as role_name
+        from user u
+        left join role r on u.id = r.user_id
+        WHERE u.id = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: user
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/user?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: Root@123
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall,log4j2  # 注意：log4j2 需要引入相关依赖，否则可只用 stat,wall
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: admin
+
+    mybatis-plus:
+      configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 控制台打印 SQL
+        map-underscore-to-camel-case: true
+      global-config:
+        db-config:
+          id-type: assign_id  # 雪花ID（需实体类主键为 Long）
+          table-underline: true
+      mapper-locations: classpath*:mapper/**/*.xml  # 如有 XML 文件
